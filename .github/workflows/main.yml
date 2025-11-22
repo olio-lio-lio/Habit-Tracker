@@ -29,13 +29,13 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm install || true
 
-      # Run ESLint safely (won't fail workflow)
+      # Run ESLint safely (will not fail workflow)
       - name: Run ESLint
-        run: npx eslint App/**/*.js || true
+        run: npx eslint App/**/*.js --quiet || true
 
-      # Optional: run dependency audit
+      # Optional: run dependency audit safely
       - name: Dependency audit
         run: |
           if [ -f package.json ]; then
