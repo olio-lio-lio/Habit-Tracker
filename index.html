@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Button hover effect */
+    .btn:hover { filter: brightness(1.05); }
+    /* Screen reader only */
+    .sr-only { position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Habit Tracker</h1>
+      <p>Add habits, tick your day, and keep your streaks going</p>
+    </header>
+
+    <section class="tip-box" aria-live="polite">
+      <strong>Tip:</strong> Click a day cell to toggle. Use Tab to focus, then Space or Enter to toggle.
+    </section>
+
+    <section class="add-habit" aria-labelledby="add-title">
+      <h2 id="add-title">Add a habit</h2>
+      <form id="habit-form">
+        <label for="habit-name" class="sr-only">Habit name</label>
+        <input id="habit-name" name="habitName" type="text" required placeholder="e.g. Drink two litres of water" autocomplete="off">
+        <button type="submit" class="btn">Add</button>
+      </form>
+    </section>
+
+    <section class="tracker" aria-labelledby="tracker-title">
+      <div class="tracker-header">
+        <h2 id="tracker-title">This week</h2>
+        <div id="week-range"></div>
+      </div>
+      <div class="tracker-grid">
+        <div id="header-row" class="habit-row header-row"></div>
+        <div id="rows"></div>
+      </div>
+    </section>
+
+    <section class="data-management" aria-labelledby="manage-title">
+      <h2 id="manage-title">Manage data</h2>
+      <div class="manage-buttons">
+        <button id="export-json">Export JSON</button>
+        <label>
+          Import JSON
+          <input id="import-json" type="file" accept="application/json" hidden>
+        </label>
+        <button id="reset-all">Reset all</button>
+      </div>
+      <p>Data is stored locally in your browser using localStorage.</p>
+    </section>
+
+    <footer>Built with HTML, CSS and JavaScript. No server required.</footer>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
