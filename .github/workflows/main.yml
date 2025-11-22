@@ -18,15 +18,24 @@ jobs:
   lint-and-audit:
     runs-on: ubuntu-latest
     steps:
+      # Checkout your code
       - uses: actions/checkout@v4
+
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
+
+      # Run ESLint safely (won't fail workflow)
       - name: Run ESLint
         run: npx eslint App/**/*.js || true
+
+      # Optional: run dependency audit
       - name: Dependency audit
         run: |
           if [ -f package.json ]; then
@@ -38,10 +47,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Upload all project files
       - name: Upload static files
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
