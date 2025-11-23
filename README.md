@@ -183,7 +183,7 @@ Workflow file path:
 
 Live site is automatically published to:
 
-👉 https://olio-lio-lio.github.io/habit-tracker/
+👉 https://olio-lio-lio.github.io/Habit-Tracker/
 
 Browser Support
 
