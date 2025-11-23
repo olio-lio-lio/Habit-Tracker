@@ -1,7 +1,25 @@
 [![CI and Deploy Pages](https://github.com/olio-lio-lio/Habit-Tracker/actions/workflows/main.yml/badge.svg)](https://github.com/olio-lio-lio/Habit-Tracker/actions/workflows/main.yml)# Habit-Tracker
 Live Demo: [Habit Tracker](https://olio-lio-lio.github.io/Habit-Tracker/)
 
+Habit Tracker
 
+A lightweight, fully client-side Habit Tracker built with HTML, CSS, and Vanilla JavaScript.
+
+This app allows users to:
+- Track daily habits
+- Mark days complete with a weekly view
+- See live streaks
+- Add and delete habits
+- Export/import data as JSON
+- Reset all habits
+- Store everything locally via localStorage
+
+No backend needed — the entire app runs in the browser.
+
+Live Demo
+
+Website: https://olio-lio-lio.github.io/Habit-Tracker/
+GitHub Pages: https://github.com/olio-lio-lio/Habit-Tracker
 
 
 ## CI/CD Pipeline
@@ -11,33 +29,7 @@ This project uses GitHub Actions to automatically:
 - Run a dependency audit to check for security issues
 - Deploy the site to GitHub Pages on every push to the `main` branch
 
-  Habit Tracker
 
-A lightweight, fully client-side Habit Tracker built with HTML, CSS, and Vanilla JavaScript.
-
-This app allows users to:
-
-Track daily habits
-
-Mark days complete with a weekly view
-
-See live streaks
-
-Add and delete habits
-
-Export/import data as JSON
-
-Reset all habits
-
-Store everything locally via localStorage
-
-No backend needed — the entire app runs in the browser.
-
-Live Demo
-
-Website: https://olio-lio-lio.github.io/habit-tracker/
-
-GitHub Pages: https://github.com/olio-lio-lio/habit-tracker
 
 Installation & Setup
 1. Clone the repository
