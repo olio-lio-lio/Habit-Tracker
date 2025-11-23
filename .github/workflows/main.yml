@@ -1,39 +1,77 @@
-name: Lint, Audit & Deploy
+name: Lint, Audit and Deploy
+
+permissions:
+  contents: write        # Needed for git push
+  pages: write           # Needed for deployment
+  id-token: write
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
-  lint-audit-deploy:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      # Checkout repo
-      - uses: actions/checkout@v4
 
-      # Set up Node.js
-      - uses: actions/setup-node@v3
+    steps:
+      # Checkout with full history (required for pushing)
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          node-version: '20'
+          fetch-depth: 0
+
+      # Node setup
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       # Install dependencies
-      - run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-      # Run ESLint
-      - name: Lint JavaScript
-        run: npx eslint App.js || true
+      # Lint
+      - name: Run ESLint
+        run: npm run lint --if-present
 
-      # Run dependency audit for high/critical issues
-      - name: Dependency Audit
+      # Audit security
+      - name: Run npm audit --fix
+        run: npm audit fix || true
+
+      # Configure Git so commits work
+      - name: Configure Git identity
         run: |
-          if [ -f package.json ]; then
-            npm audit --audit-level=high || true
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Commit only if there are changes (prevents exit code 128)
+      - name: Commit changes if any
+        run: |
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: auto lint & audit fixes"
+            git push origin main
+          else
+            echo "No changes to commit"
           fi
 
-      # Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Build your site (your project is static, so no build command needed)
+      - name: Prepare site
+        run: |
+          mkdir -p ./public
+          cp -r index.html App.js styles.css ./public/
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
