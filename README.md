@@ -45,11 +45,11 @@ A lightweight, fully client-side Habit Tracker built with **HTML, CSS, and Vanil
 
 <div style="display:flex; gap:20px; align-items:flex-start;">
   <div>
-    <img src="img/HabitPage.png" alt="Desktop UI" width="400"/>
+    <img src="img/desktop UI.png" alt="Desktop UI" width="400"/>
     <p style="text-align:center;">Desktop View</p>
   </div>
   <div>
-    <img src="img/MobileView.png" alt="Mobile UI" width="200"/>
+    <img src="img/mobile UI.png" alt="Mobile UI" width="200"/>
     <p style="text-align:center;">Mobile View</p>
   </div>
 </div>
