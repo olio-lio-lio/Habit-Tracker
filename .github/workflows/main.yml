@@ -1,60 +1,39 @@
-name: CI and Deploy Pages
+name: Lint, Audit & Deploy
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  lint-and-audit:
+  lint-audit-deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checkout your code
+      # Checkout repo
       - uses: actions/checkout@v4
 
-      # Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      # Set up Node.js
+      - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       # Install dependencies
-      - name: Install dependencies
-        run: npm install || true
+      - run: npm install
 
-      # Run ESLint safely (will not fail workflow)
-      - name: Run ESLint
-        run: npx eslint App/**/*.js --quiet || true
+      # Run ESLint
+      - name: Lint JavaScript
+        run: npx eslint App.js || true
 
-      # Optional: run dependency audit safely
-      - name: Dependency audit
+      # Run dependency audit for high/critical issues
+      - name: Dependency Audit
         run: |
           if [ -f package.json ]; then
             npm audit --audit-level=high || true
           fi
 
-  deploy-pages:
-    needs: lint-and-audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Upload all project files
-      - name: Upload static files
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v7
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
