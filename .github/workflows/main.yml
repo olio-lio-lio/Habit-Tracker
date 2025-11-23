@@ -56,22 +56,23 @@ jobs:
             echo "No changes to commit"
           fi
 
-      # Build your site (your project is static, so no build command needed)
+      # Build your static site
       - name: Prepare site
         run: |
-          mkdir -p ./public
-          cp -r index.html App.js styles.css ./public/
+          mkdir -p public
+          cp index.html App.js styles.css public/
 
-      # Upload artifact
+      # Upload artifact for deployment
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: public
 
-   deploy:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
 
+    # REQUIRED for GitHub Pages deployment
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -83,9 +84,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v4
-
-
-    steps:
-      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
