@@ -41,15 +41,21 @@ A lightweight, fully client-side Habit Tracker built with **HTML, CSS, and Vanil
 
 ---
 
-## 🖼 Screenshots
+## Screenshots
 
-**Desktop View**  
-desktop UI.png
+<div style="display:flex; gap:20px; align-items:flex-start;">
+  <div>
+    <img src="img/HabitPage.png" alt="Desktop UI" width="400"/>
+    <p style="text-align:center;">Desktop View</p>
+  </div>
+  <div>
+    <img src="img/MobileView.png" alt="Mobile UI" width="200"/>
+    <p style="text-align:center;">Mobile View</p>
+  </div>
+</div>
 
-**Mobile View**  
-mobile UI.png
-
-> The weekly habit grid updates dynamically so that the week always ends with today.
+> The weekly habit grid updates dynamically so that the week always ends with today.  
+> Clickable day buttons, streak counters, and the Add Habit input are all shown.
 
 ---
 
@@ -79,9 +85,6 @@ habit-tracker/
 ├── package.json # Optional, for linting tools
 └── README.md
 
-yaml
-Kopioi koodi
-
 ---
 
 ## 🚀 GitHub Pages Deployment
@@ -94,9 +97,6 @@ This project uses **GitHub Actions** to automatically:
 
 **Workflow file path:**  
 .github/workflows/main.yml
-
-yaml
-Kopioi koodi
 
 **Live site:** [https://olio-lio-lio.github.io/Habit-Tracker/](https://olio-lio-lio.github.io/Habit-Tracker/)
 
