@@ -44,10 +44,10 @@ A lightweight, fully client-side Habit Tracker built with **HTML, CSS, and Vanil
 ## 🖼 Screenshots
 
 **Desktop View**  
-![Desktop](img/HabitPage.png)
+desktop UI.png
 
 **Mobile View**  
-![Mobile](img/MobileView.png)
+mobile UI.png
 
 > The weekly habit grid updates dynamically so that the week always ends with today.
 
