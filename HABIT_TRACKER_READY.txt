@@ -1,0 +1,12 @@
+HABIT_TRACKER_READY/
+├─ App/
+│  └─ app.js
+├─ index.html
+├─ styles.css
+├─ .eslintrc.json
+├─ package.json
+├─ package-lock.json
+├─ README.md
+└─ .github/
+    └─ workflows/
+        └─ main.yml

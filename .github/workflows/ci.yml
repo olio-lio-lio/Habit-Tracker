@@ -17,3 +17,9 @@ jobs:
         run: npm install
       - name: Run ESLint
         run: npx eslint app.js || true
+
+      - name: Dependency audit
+        run: |
+          if [ -f package.json ]; then
+            npm audit --audit-level=high || true
+          fi
