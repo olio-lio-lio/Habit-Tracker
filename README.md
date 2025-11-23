@@ -45,11 +45,11 @@ A lightweight, fully client-side Habit Tracker built with **HTML, CSS, and Vanil
 
 <div style="display:flex; gap:20px; align-items:flex-start;">
   <div>
-    <img src="img/desktop UI.png" alt="Desktop UI" width="400"/>
+    <img src="desktop_UI.png" alt="Desktop UI" width="400"/>
     <p style="text-align:center;">Desktop View</p>
   </div>
   <div>
-    <img src="img/mobile UI.png" alt="Mobile UI" width="200"/>
+    <img src="mobile_UI.png" alt="Mobile UI" width="200"/>
     <p style="text-align:center;">Mobile View</p>
   </div>
 </div>
@@ -78,12 +78,12 @@ habit-tracker/
 │ └── styles.css # Main stylesheet
 ├── js/
 │ └── app.js # Main JS logic
-├── img/ # Screenshots for README
-│ ├── HabitPage.png
-│ └── MobileView.png
+├── desktop_UI.png # Desktop screenshot
+├── mobile_UI.png # Mobile screenshot
 ├── index.html
 ├── package.json # Optional, for linting tools
 └── README.md
+
 
 ---
 
@@ -97,6 +97,9 @@ This project uses **GitHub Actions** to automatically:
 
 **Workflow file path:**  
 .github/workflows/main.yml
+
+yaml
+Kopioi koodi
 
 **Live site:** [https://olio-lio-lio.github.io/Habit-Tracker/](https://olio-lio-lio.github.io/Habit-Tracker/)
 
