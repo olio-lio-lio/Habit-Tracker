@@ -1,9 +1,18 @@
+// -------------------------------
+// Habit Tracker - app.js
+// -------------------------------
+
 // Get reference to rows container
 const rows = document.getElementById("rows");
 
-// Load saved state from localStorage or create empty state
-let state =
-  JSON.parse(localStorage.getItem("habitTrackerState")) || { habits: [] };
+// Load saved state from localStorage safely
+let state;
+try {
+  const saved = JSON.parse(localStorage.getItem("habitTrackerState"));
+  state = Array.isArray(saved?.habits) ? saved : { habits: [] };
+} catch {
+  state = { habits: [] };
+}
 
 // Get today's date as "YYYY-MM-DD"
 function todayKey() {
@@ -25,32 +34,29 @@ function getWeekKeys() {
 
 let weekKeys = getWeekKeys();
 
-// Populate the header row with actual dates
+// -------------------------------
+// Render header row
+// -------------------------------
 function renderHeaderRow() {
   const headerRow = document.getElementById("header-row");
   headerRow.innerHTML = "";
 
-  // First column: "Habit"
   const habitCol = document.createElement("div");
   habitCol.style.padding = "10px";
   habitCol.style.color = "#0b3b58";
   habitCol.textContent = "Habit";
   headerRow.appendChild(habitCol);
 
-  // 7 day columns
   weekKeys.forEach((dateStr) => {
     const col = document.createElement("div");
     col.style.padding = "10px";
     col.style.color = "#0b3b58";
-
     const d = new Date(dateStr);
     const options = { weekday: "short", day: "numeric" };
     col.textContent = d.toLocaleDateString(undefined, options);
-
     headerRow.appendChild(col);
   });
 
-  // Streak + Actions
   ["Streak", "Actions"].forEach((text) => {
     const col = document.createElement("div");
     col.style.padding = "10px";
@@ -60,24 +66,23 @@ function renderHeaderRow() {
   });
 }
 
-// Call it once on load
 renderHeaderRow();
 
-// Create a new habit object
+// -------------------------------
+// Utility functions
+// -------------------------------
 function newHabit(name) {
-  return {
-    id: Math.random().toString(36).slice(2, 9),
-    name: name,
-    log: {},
-  };
+  return { id: Math.random().toString(36).slice(2, 9), name, log: {} };
 }
 
-// Save state to localStorage
 function saveState(stateObj) {
-  localStorage.setItem("habitTrackerState", JSON.stringify(stateObj));
+  try {
+    localStorage.setItem("habitTrackerState", JSON.stringify(stateObj));
+  } catch (e) {
+    console.error("Failed to save state:", e);
+  }
 }
 
-// Calculate consecutive days streak
 function computeStreak(habit) {
   let count = 0;
   const d = new Date();
@@ -94,13 +99,13 @@ function computeStreak(habit) {
   return count;
 }
 
-//  RENDER UI  //
-
+// -------------------------------
+// Render main UI
+// -------------------------------
 function render() {
   rows.innerHTML = "";
 
-  // Placeholder if no habits exist
-  if (state.habits.length === 0) {
+  if (!Array.isArray(state.habits) || state.habits.length === 0) {
     const row = document.createElement("div");
     row.className = "habit-row";
 
@@ -108,9 +113,7 @@ function render() {
     nameCol.textContent = "No habits yet.";
     row.appendChild(nameCol);
 
-    weekKeys.forEach(() => {
-      row.appendChild(document.createElement("div"));
-    });
+    weekKeys.forEach(() => row.appendChild(document.createElement("div")));
 
     const streakCol = document.createElement("div");
     streakCol.textContent = "0";
@@ -124,17 +127,14 @@ function render() {
     return;
   }
 
-  // Render each habit row
   state.habits.forEach((h) => {
     const row = document.createElement("div");
     row.className = "habit-row";
 
-    // Habit name
     const nameCol = document.createElement("div");
     nameCol.textContent = h.name;
     row.appendChild(nameCol);
 
-    // Day cells
     weekKeys.forEach((k) => {
       const col = document.createElement("div");
       col.style.padding = "10px";
@@ -144,25 +144,15 @@ function render() {
       btn.type = "button";
       btn.setAttribute("aria-label", `${h.name} on ${k}`);
       btn.setAttribute("role", "checkbox");
-
       const checked = !!h.log[k];
       btn.setAttribute("aria-checked", String(checked));
-
       btn.textContent = checked ? "✓" : "";
       btn.dataset.habitId = h.id;
       btn.dataset.dateKey = k;
 
       btn.style.cssText = `
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        width:36px;
-        height:36px;
-        margin:auto;
-        border-radius:8px;
-        border:1px solid #dbe7f0;
-        cursor:pointer;
-        user-select:none;
+        display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin:auto;
+        border-radius:8px;border:1px solid #dbe7f0;cursor:pointer;user-select:none;
         background:${checked ? "#e9f8ef" : "#fff"};
         color:${checked ? "#1e9e4a" : "inherit"};
         font-weight:${checked ? "700" : "400"};
@@ -180,14 +170,11 @@ function render() {
       row.appendChild(col);
     });
 
-    // Streak column
     const streakCol = document.createElement("div");
     streakCol.textContent = String(computeStreak(h));
     row.appendChild(streakCol);
 
-    // Actions column
     const actions = document.createElement("div");
-
     const tick = document.createElement("button");
     tick.textContent = "Tick today";
     tick.addEventListener("click", () => toggleLog(h.id, todayKey()));
@@ -209,8 +196,9 @@ function render() {
   });
 }
 
-//  EVENT HANDLERS  //
-
+// -------------------------------
+// Event handlers
+// -------------------------------
 function onToggleDay(e) {
   const btn = e.currentTarget;
   toggleLog(btn.dataset.habitId, btn.dataset.dateKey);
@@ -225,7 +213,6 @@ function toggleLog(habitId, dateKey) {
   }
 }
 
-// Show error messages under form
 function showError(message) {
   let errorEl = document.getElementById("habit-error");
   if (!errorEl) {
@@ -238,47 +225,44 @@ function showError(message) {
   errorEl.textContent = message;
 }
 
-// Add habit form handler
+// -------------------------------
+// Form submission
+// -------------------------------
 document.getElementById("habit-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const input = document.getElementById("habit-name");
   const name = input.value.trim();
   if (!name) return;
 
-  // Check duplicates
-  const exists = state.habits.some(
-    (h) => h.name.toLowerCase() === name.toLowerCase()
-  );
-
+  const exists = state.habits.some((h) => h.name.toLowerCase() === name.toLowerCase());
   if (exists) {
     showError("Habit already exists");
     return;
   }
 
   showError("");
-
   state.habits.push(newHabit(name));
   saveState(state);
   input.value = "";
   render();
 });
 
+// -------------------------------
 // Export JSON
+// -------------------------------
 document.getElementById("export-json").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(state, null, 2)], {
-    type: "application/json",
-  });
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
   a.href = url;
   a.download = "habits-export.json";
   a.click();
-
   URL.revokeObjectURL(url);
 });
 
+// -------------------------------
 // Import JSON
+// -------------------------------
 document.getElementById("import-json").addEventListener("change", async (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
@@ -287,28 +271,36 @@ document.getElementById("import-json").addEventListener("change", async (e) => {
     const text = await file.text();
     const data = JSON.parse(text);
 
-    if (!Array.isArray(data.habits)) throw new Error("Invalid format");
+    // Validate structure
+    if (!data || !Array.isArray(data.habits)) throw new Error("Invalid format");
+    data.habits.forEach((h) => {
+      if (!h.id || !h.name || !h.log) throw new Error("Habit missing required fields");
+    });
 
     state = data;
     saveState(state);
     render();
     alert("Import complete. Data loaded.");
-  } catch {
-    alert("Import failed. Please check the JSON file format.");
+  } catch (err) {
+    alert(`Import failed: ${err.message}`);
   }
 
   e.target.value = "";
 });
 
+// -------------------------------
 // Reset all
+// -------------------------------
 document.getElementById("reset-all").addEventListener("click", () => {
   if (!confirm("Delete all habits and logs?")) return;
-
   state = { habits: [] };
   saveState(state);
   render();
   alert("All data reset.");
 });
 
+// -------------------------------
 // Initial render
+// -------------------------------
 render();
+
