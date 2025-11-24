@@ -120,6 +120,85 @@ Kopioi koodi
 
 ---
 
+Architecture
+
+The project follows a simple, client-side architecture with no backend.
+All runs directly in the browser.
+
+1. index.html
+
+Defines the structure of the user interface: header, habit form, weekly grid, and data-management section.
+Loads App.js with defer so the script executes after the page loads.
+
+2. styles.css
+
+Implements layout, grid styling, responsive behavior, and accessibility improvements (focus states, readable colors).
+
+3. App.js
+
+Handles all application logic:
+
+a. State Management
+
+The main data structure is an array of habit objects.
+Each habit stores its name and a 7-day array of booleans (true/false).
+
+All data is stored using localStorage, ensuring persistence across browser sessions.
+
+b. Rendering Layer
+
+renderWeek() calculates the current Monday–Sunday range.
+renderHabits() updates the DOM by creating rows, columns, and buttons for each habit.
+
+Re-renders after every change to keep the UI consistent.
+
+c. Event Handling
+
+Form submission (add habit)
+Day toggling (click, keyboard)
+Export and import of data
+Resetting all habits
+Ensures keyboard accessibility (Enter/Space to toggle).
+
+d. Modules / Functional Separation
+
+Although kept in a single file for simplicity, the logic is divided into:
+
+Date utilities
+Local storage utilities
+Rendering functions
+Event handlers
+Initialization
+
+This keeps the file readable and maintainable without requiring a build system.
+
+
+Limitations
+
+1. No backend or user accounts
+
+Data is stored only locally. Habits do not transfer across devices or browsers. Clearing browser storage deletes all data.
+
+2. Single-week view only
+
+The app shows only the current week.
+
+3. Single JavaScript file
+
+All logic is in one file instead of separate modules. Could be made more scalable for bigger applications.
+
+4. No real-time feedback or animations
+
+UI updates instantly but lacks transitions or visual highlights.
+
+5. Accessibility could be further improved
+
+Default browser focus outline is used in this app, custom focus styles or ARIA attributes could enhance usability further.
+
+6. Limited error handling
+
+Importing corrupted JSON will fail silently, no user-facing error messages for broken imports.
+
 ## 🌐 Browser Support
 
 - Chrome  
