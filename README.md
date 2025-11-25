@@ -18,7 +18,7 @@ A lightweight, fully client-side Habit Tracker built with **HTML, CSS, and Vanil
 - 📱 **Mobile-Friendly & Accessible** – Responsive layout and keyboard navigation
 
 ---
-✅ Installation / Setup
+## ✅ Installation / Setup
 
 1. Clone or download this repository
 git clone https://github.com/olio-lio-lio/Habit-Tracker
@@ -120,7 +120,7 @@ Kopioi koodi
 
 ---
 
-Architecture
+## Architecture
 
 The project follows a simple, client-side architecture with no backend.
 All runs directly in the browser.
@@ -173,7 +173,7 @@ Initialization
 This keeps the file readable and maintainable without requiring a build system.
 
 
-Limitations
+## Limitations
 
 1. No backend or user accounts
 
